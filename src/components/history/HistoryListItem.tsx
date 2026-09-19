@@ -2,6 +2,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import { useRouter } from 'expo-router';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { HistoryRecord } from '../../lib/db/queries';
+import { useTheme } from '../../lib/theme/ThemeContext';
 
 interface Props {
   record: HistoryRecord;
@@ -9,6 +10,7 @@ interface Props {
 
 export default function HistoryListItem({ record }: Props) {
   const router = useRouter();
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity
@@ -18,18 +20,20 @@ export default function HistoryListItem({ record }: Props) {
       {record.image_uri ? (
         <Image source={{ uri: record.image_uri }} style={styles.thumbnail} />
       ) : (
-        <View style={styles.thumbnailPlaceholder}>
+        <View style={[styles.thumbnailPlaceholder, { backgroundColor: colors.surface }]}>
           <Ionicons
             name={record.action_type === 'scanned' ? 'scan-outline' : 'qr-code-outline'}
             size={22}
-            color="#6b7280"
+            color={colors.textSecondary}
           />
         </View>
       )}
 
       <View style={styles.info}>
-        <Text style={styles.content} numberOfLines={1}>{record.content}</Text>
-        <Text style={styles.meta}>
+        <Text style={[styles.content, { color: colors.text }]} numberOfLines={1}>
+          {record.content}
+        </Text>
+        <Text style={[styles.meta, { color: colors.textSecondary }]}>
           {record.action_type === 'scanned' ? 'Scanned' : 'Generated'}
           {record.source_type ? ` · ${record.source_type}` : ''}
           {' · '}{formatRelativeTime(record.created_at)}
@@ -57,9 +61,9 @@ const styles = StyleSheet.create({
   thumbnail: { width: 48, height: 48, borderRadius: 8 },
   thumbnailPlaceholder: {
     width: 48, height: 48, borderRadius: 8,
-    backgroundColor: '#f3f4f6', justifyContent: 'center', alignItems: 'center',
+    justifyContent: 'center', alignItems: 'center',
   },
   info: { flex: 1, gap: 2 },
   content: { fontSize: 15, fontWeight: '600' },
-  meta: { fontSize: 13, color: '#6b7280' },
+  meta: { fontSize: 13 },
 });

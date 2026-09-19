@@ -2,8 +2,8 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+import { useTheme } from '../../lib/theme/ThemeContext';
+import { IoniconName } from '../../lib/types';
 
 interface SourceTypeOption {
   type: 'url' | 'wifi' | 'contact' | 'text';
@@ -20,19 +20,20 @@ const SOURCE_TYPES: SourceTypeOption[] = [
 
 export default function GenerateScreen() {
   const router = useRouter();
+  const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <Text style={styles.heading}>What do you want to encode?</Text>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      <Text style={[styles.heading, { color: colors.text }]}>What do you want to encode?</Text>
       <View style={styles.grid}>
         {SOURCE_TYPES.map((option) => (
           <TouchableOpacity
             key={option.type}
-            style={styles.card}
+            style={[styles.card, { backgroundColor: colors.surface }]}
             onPress={() => router.push(`/generate/${option.type}`)}
           >
-            <Ionicons name={option.icon} size={32} color="#2563eb" />
-            <Text style={styles.cardLabel}>{option.label}</Text>
+            <Ionicons name={option.icon} size={32} color={colors.primary} />
+            <Text style={[styles.cardLabel, { color: colors.text }]}>{option.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
   card: {
     width: '47%',
     aspectRatio: 1,
-    backgroundColor: '#f3f4f6',
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',

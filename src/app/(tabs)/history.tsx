@@ -5,8 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import HistoryFilterBar, { HistoryFilter } from '../../components/history/HistoryFilterBar';
 import HistoryListItem from '../../components/history/HistoryListItem';
 import { getAllHistory, getHistoryByType, HistoryRecord } from '../../lib/db/queries';
+import { useTheme } from '../../lib/theme/ThemeContext';
 
 export default function HistoryScreen() {
+  const { colors } = useTheme();
   const [filter, setFilter] = useState<HistoryFilter>('all');
   const [records, setRecords] = useState<HistoryRecord[]>([]);
 
@@ -22,11 +24,11 @@ export default function HistoryScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       <HistoryFilterBar active={filter} onChange={setFilter} />
       {records.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyText}>No history yet</Text>
+          <Text style={[styles.emptyText, { color: colors.textMuted }]}>No history yet</Text>
         </View>
       ) : (
         <FlatList
@@ -44,5 +46,5 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   list: { paddingHorizontal: 20 },
   empty: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  emptyText: { color: '#9ca3af', fontSize: 15 },
+  emptyText: { fontSize: 15 },
 });

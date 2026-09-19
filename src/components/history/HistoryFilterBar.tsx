@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../lib/theme/ThemeContext';
 
 export type HistoryFilter = 'all' | 'scanned' | 'generated';
 
@@ -14,15 +15,25 @@ const FILTERS: { key: HistoryFilter; label: string }[] = [
 ];
 
 export default function HistoryFilterBar({ active, onChange }: Props) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.bar}>
       {FILTERS.map((f) => (
         <TouchableOpacity
           key={f.key}
-          style={[styles.tab, active === f.key && styles.tabActive]}
+          style={[
+            styles.tab,
+            { backgroundColor: active === f.key ? colors.primary : colors.surface },
+          ]}
           onPress={() => onChange(f.key)}
         >
-          <Text style={[styles.label, active === f.key && styles.labelActive]}>
+          <Text
+            style={[
+              styles.label,
+              { color: active === f.key ? '#fff' : colors.text },
+            ]}
+          >
             {f.label}
           </Text>
         </TouchableOpacity>
@@ -33,8 +44,6 @@ export default function HistoryFilterBar({ active, onChange }: Props) {
 
 const styles = StyleSheet.create({
   bar: { flexDirection: 'row', gap: 8, paddingHorizontal: 20, paddingVertical: 12 },
-  tab: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, backgroundColor: '#f3f4f6' },
-  tabActive: { backgroundColor: '#2563eb' },
-  label: { fontSize: 14, fontWeight: '600', color: '#374151' },
-  labelActive: { color: '#fff' },
+  tab: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20 },
+  label: { fontSize: 14, fontWeight: '600' },
 });
