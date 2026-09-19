@@ -59,12 +59,16 @@
 // });
 
 import { useCameraPermissions } from 'expo-camera';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppState, Button, Linking, StyleSheet, Text, View } from 'react-native';
 import QRCameraView from '../../components/scanner/CameraView';
+import ScanResultSheet from '../../components/scanner/ScanResultScreen';
+import { insertHistory } from '../../lib/db/queries';
+import { detectContentType, ScannedContentType } from '../../lib/qr/detectType';
 
 export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
+  const [result, setResult] = useState<{ data: string; type: ScannedContentType } | null>(null);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
@@ -72,7 +76,6 @@ export default function ScanScreen() {
         requestPermission();
       }
     });
-
     return () => subscription.remove();
   }, []);
 
@@ -107,13 +110,32 @@ export default function ScanScreen() {
   }
 
   function handleScanned(data: string) {
-    console.log('Scanned:', data);
-    // insertHistory('scanned', data, ...) goes here next
+    const type = detectContentType(data);
+    setResult({ data, type });
+  }
+
+  function handleSaveAndClose() {
+    if (!result) return;
+    insertHistory('scanned', result.data, result.type, undefined);
+    setResult(null);
+  }
+
+  
+  function handleScanAgain() {
+    setResult(null);
   }
 
   return (
     <View style={styles.cameraContainer}>
-      <QRCameraView onScanned={handleScanned} />
+      <QRCameraView onScanned={handleScanned} paused={result !== null} />
+      {result && (
+        <ScanResultSheet
+          data={result.data}
+          type={result.type}
+          onSaveAndClose={handleSaveAndClose}
+          onScanAgain={handleScanAgain}
+        />
+      )}
     </View>
   );
 }

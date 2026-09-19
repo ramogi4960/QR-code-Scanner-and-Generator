@@ -95,9 +95,10 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   onScanned: (data: string) => void;
+  paused: boolean;
 }
 
-export default function QRCameraView({ onScanned }: Props) {
+export default function QRCameraView({ onScanned, paused }: Props) {
   const [scanned, setScanned] = useState(false);
   const [lastResult, setLastResult] = useState<string | null>(null);
 
@@ -119,7 +120,7 @@ export default function QRCameraView({ onScanned }: Props) {
         style={StyleSheet.absoluteFill}
         facing="back"
         barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
-        onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
+        onBarcodeScanned={paused ? undefined : handleBarcodeScanned}
       />
       {scanned && (
         <View style={styles.overlay}>

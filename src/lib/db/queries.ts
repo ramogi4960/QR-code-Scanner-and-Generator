@@ -1,3 +1,4 @@
+import { ScannedContentType } from "../qr/detectType";
 import db from "./schema";
 
 export type ActionType = 'scanned' | 'generated';
@@ -14,7 +15,7 @@ export interface HistoryRecord {
 export function insertHistory(
   actionType: ActionType,
   content: string,
-  sourceType?: string,
+  sourceType?: ScannedContentType | string,
   imageUri?: string
 ) {
   db.runSync(
