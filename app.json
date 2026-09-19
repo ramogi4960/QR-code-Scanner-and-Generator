@@ -39,11 +39,15 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "This app uses your camera to scan QR codes."
+          "cameraPermission": "This app uses your camera to scan QR codes.",
+          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "isAccessMediaLocationEnabled": true,
+          "granularPermissions": ["audio", "photo"]
         }
       ],
       "expo-sqlite",
-      "@react-native-vector-icons/ionicons"
+      "@react-native-vector-icons/ionicons",
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true,
