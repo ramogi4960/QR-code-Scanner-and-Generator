@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "QR",
+    "name": "QR254",
     "slug": "QR",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,8 +9,12 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.kevobizzi.qr254",
+      "buildNumber": "1",
+      "supportsTablet": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "This app uses your camera to scan QR codes."
+        "NSCameraUsageDescription": "This app uses your camera to scan QR codes.",
+        "NSPhotoLibraryAddUsageDescription": "This app saves generated QR codes as images to your photo library when you choose to save them."
       }
     },
     "android": {
@@ -43,6 +47,22 @@
           "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
           "isAccessMediaLocationEnabled": true,
           "granularPermissions": ["audio", "photo"]
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "This app saves generated QR codes as images to your photo library when you choose to save them.",
+          "savePhotosPermission": "This app saves generated QR codes as images to your photo library when you choose to save them."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
         }
       ],
       "expo-sqlite",

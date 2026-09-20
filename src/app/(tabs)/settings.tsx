@@ -5,8 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { clearAllHistory } from '../../lib/db/queries';
 import { useTheme } from '../../lib/theme/ThemeContext';
 
-const PRIVACY_POLICY_URL = 'https://example.com/privacy-policy'; // replace once hosted
-const FEEDBACK_EMAIL = 'your-email@example.com'; // replace with your real address
+const PRIVACY_POLICY_URL = 'https://ramogi4960.github.io/'; // replace once hosted
+const FEEDBACK_EMAIL = 'ramogikevin2025@gmail.com'; // replace with your real address
 const APP_VERSION = '1.0.0';
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
